@@ -67,7 +67,6 @@ ActivityWidget::ActivityWidget(AccountState *accountState, QWidget *parent)
     ActivityItemDelegate *delegate = new ActivityItemDelegate;
     delegate->setParent(this);
     _ui->_activityList->setItemDelegate(delegate);
-    _ui->_activityList->setBackgroundRole(QPalette::Background);
     _ui->_activityList->setAlternatingRowColors(true);
     _ui->_activityList->setModel(_model);
 
@@ -77,7 +76,7 @@ ActivityWidget::ActivityWidget(AccountState *accountState, QWidget *parent)
         this, &ActivityWidget::slotAccountActivityStatus);
 
     _ui->_copyButton->setToolTip(tr("Copy the activity list to the clipboard."));
-    connect(_ui->_copyButton, &QPushButton::click, this, &ActivityWidget::copyToClipboard);
+    connect(_ui->_copyButton, &QPushButton::clicked, this, &ActivityWidget::copyToClipboard);
 
     connect(_model, &QAbstractItemModel::rowsInserted, this, &ActivityWidget::rowsInserted);
 
@@ -545,12 +544,6 @@ ActivitySettings::ActivitySettings(AccountState *accountState, QWidget *parent)
     setLayout(_vbox);
 
     _activityWidget = new ActivityWidget(_accountState, this);
-
-    // set background white
-    QPalette palette;
-    palette.setColor(QPalette::Background, Qt::white);
-    _activityWidget->setAutoFillBackground(true);
-    _activityWidget->setPalette(palette);
 
     _vbox->insertWidget(1, _activityWidget);
     connect(_activityWidget, &ActivityWidget::copyToClipboard, this, &ActivitySettings::slotCopyToClipboard);
